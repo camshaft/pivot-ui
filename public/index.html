@@ -1,0 +1,28 @@
+<html data-ng-app="pivot">
+<head>
+  <title>Pivot UI</title>
+  <link rel="stylesheet" type="text/css" href="build.css">
+  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css">
+</head>
+<body>
+  <ul id="menu" data-ng-controller="MenuController">
+    <li><p>Applications</p></li>
+    <li data-ng-repeat="app in apps">
+      <a data-ng-class="{active: app.name == currentApp}" data-ng-href="#/apps/{{app.name}}" data-ng-bind="app.name"></a>
+    </li>
+  </ul>
+  <div id="actions">
+    <input id="search" type="text" placeholder="Search">
+    <select id="filter">
+      <option value="">filter by</option>
+    </select>
+    <select id="sort">
+      <option value="asc">sort</option>
+      <option value="asc">asc</option>
+      <option value="desc">desc</option>
+    </select>
+  </div>
+  <div id="content" data-ng-view=""></div>
+  <script type="text/javascript" src="build.js"></script>
+</body>
+</html>

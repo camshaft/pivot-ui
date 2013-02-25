@@ -1,0 +1,34 @@
+{
+  "name": "pivot",
+  "repo": "CamShaft/pivot-ui",
+  "description": "",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "visionmedia/debug": "*",
+    "CamShaft/component-angular": "*",
+    "component/spinner": "*",
+    "component/pillbox": "*",
+    "component/each": "*",
+    "LearnBoost/socket.io-client": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "main": "public/javascripts/config.js",
+  "scripts": [
+    "public/javascripts/config.js",
+    "public/javascripts/index.js",
+    "public/javascripts/controllers/index.js",
+    "public/javascripts/controllers/application.js",
+    "public/javascripts/controllers/menu.js",
+    "public/javascripts/directives/pillbox.js",
+    "public/javascripts/directives/slider.js"
+  ],
+  "styles": [
+    "public/stylesheets/main.css",
+    "public/stylesheets/menu.css",
+    "public/stylesheets/block.css",
+    "public/stylesheets/feature.css",
+    "public/stylesheets/actions.css"
+  ]
+}

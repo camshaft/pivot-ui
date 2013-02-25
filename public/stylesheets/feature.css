@@ -1,0 +1,156 @@
+.feature td.title em {
+  color: #929292;
+}
+.feature .block {
+  position: relative;
+  background: #fff;
+  cursor: pointer;
+}
+.feature .block table td:first-child {
+  display: none;
+}
+.feature .block .progress {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+.feature .block .attempts {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 8px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  font-size: 10px;
+}
+.feature .block .remove {
+  position: absolute;
+  top: 30px;
+  right: -6px;
+  background: #fff;
+  display: block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  outline: none;
+  border: 1px solid #eee;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-transition: opacity 200ms, top 300ms;
+  -moz-transition: opacity 200ms, top 300ms;
+  -o-transition: opacity 200ms, top 300ms;
+  -ms-transition: opacity 200ms, top 300ms;
+  transition: opacity 200ms, top 300ms;
+  opacity: 0;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  filter: alpha(opacity=0);
+}
+.feature .block .remove:hover {
+  border: 1px solid #d6d6d6;
+}
+.feature .block .remove:active {
+  border: 1px solid #bebebe;
+}
+.feature .block:hover .remove {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  top: -6px;
+}
+.feature .details {
+  background: #3b3b3b;
+  width: 89%;
+  margin-top: -10px;
+  margin-left: 35px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -o-border-bottom-left-radius: 5px;
+  -ms-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -o-border-bottom-right-radius: 5px;
+  -ms-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-box-shadow: inset 0 1px 10px 0 rgba(0,0,0,0.8);
+  box-shadow: inset 0 1px 10px 0 rgba(0,0,0,0.8);
+  -webkit-transition: padding 200ms, height 200ms;
+  -moz-transition: padding 200ms, height 200ms;
+  -o-transition: padding 200ms, height 200ms;
+  -ms-transition: padding 200ms, height 200ms;
+  transition: padding 200ms, height 200ms;
+  height: 0;
+  overflow: hidden;
+}
+.feature .details table {
+  width: 100%;
+}
+.feature .details table td:first-child {
+  width: 60px;
+  color: #949494;
+}
+.feature .details.show {
+  padding: 15px 20px;
+  height: auto;
+}
+.feature ul.log {
+  margin: 0;
+  padding: 0;
+  margin: 5px;
+  padding: 10px;
+  max-height: 100px;
+  overflow-y: auto;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  width: 95%;
+}
+.feature ul.log li {
+  margin: 0;
+  list-style: none;
+}
+.feature ul.log li {
+  padding: 5px 0;
+  border-bottom: 1px dotted #424242;
+  color: #666;
+}
+.feature ul.log li:last-child {
+  border-bottom: none;
+}
+.feature .details ::-webkit-scrollbar {
+  width: 2px;
+}
+.feature .details ::-webkit-scrollbar-thumb:vertical {
+  background: #858585;
+}
+.feature .details ::-webkit-scrollbar-track {
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.feature .details > div {
+  padding: 10px 0;
+  border-bottom: 1px solid #424242;
+}
+.feature .details > div:last-child {
+  border-bottom: none;
+}
+
+.feature .pillbox input {
+  -webkit-user-select: initial;
+     -moz-user-select: initial;
+      -ms-user-select: initial;
+       -o-user-select: initial;
+          user-select: initial;
+}
+
+.feature .pillbox ul li {
+  padding: 5px;
+}
+
+.feature .pillbox ul li a {
+  padding-left: 2px;
+  color: #6C8774;
+}
+

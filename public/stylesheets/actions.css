@@ -1,0 +1,34 @@
+#actions {
+  position: fixed;
+  top: -2px;
+  right: -2px;
+  z-index: 20;
+}
+#sort,
+#filter,
+#search {
+  float: left;
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px solid #eee;
+  -webkit-border-radius: 0 0 0 5px;
+  border-radius: 0 0 0 5px;
+  -webkit-appearance: none;
+  color: #3b3b3b;
+  outline: none;
+}
+#sort:hover,
+#filter:hover,
+#search:hover {
+  border-color: #d6d6d6;
+}
+#sort,
+#filter {
+  cursor: pointer;
+}
+#sort,
+#filter {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  border-left: none;
+}
