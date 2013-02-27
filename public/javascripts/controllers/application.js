@@ -1,42 +1,28 @@
 /*
  * Module dependencies
  */
-var app = require("..");
+var app = require("..")
+  , ioService = require("../services/io");
 
 /*
  * ApplicationController
  */
-function ApplicationController($scope, $routeParams) {
-  $scope.appName = $routeParams.app;
+function ApplicationController($scope, $routeParams, io) {
+  var appName = $scope.appName = $routeParams.app;
 
-  $scope.features = [
-    {
-      config: {
-        users: ["scott", "cameron"],
-        groups: [],
-        split: {
-          "testing1": 30,
-          "testing2": 30,
-          "testing3": 40
-        }
-      },
-      info: {
-        name: "featureOne",
-        variants: ["testing1", "testing2", "testing3"]
-      }
-    },
-    {
-      config: {
-        users: ["dave"],
-        groups: ["beta"],
-        split: {}
-      },
-      info: {
-        name: "featureTwo",
-        variants: [true, false]
-      }
-    }
-  ]
+  function handleFeatures(application) {
+    $scope.$apply(function() {
+      $scope.application = application;
+    });
+  };
+
+  io.emit("application", appName, handleFeatures);
+  io.on(appName, handleFeatures);
+
+  $scope.$watch("application", function(oldVal, newVal) {
+    if(!oldVal || !newVal) return;
+    io.emit("application-update", appName, newVal);
+  }, true);
 };
 
 /*
@@ -45,6 +31,7 @@ function ApplicationController($scope, $routeParams) {
 app.controller(ApplicationController.name, [
   '$scope',
   '$routeParams',
+  ioService,
   ApplicationController
 ]);
 

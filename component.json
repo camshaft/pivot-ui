@@ -9,8 +9,7 @@
     "CamShaft/component-angular": "*",
     "component/spinner": "*",
     "component/pillbox": "*",
-    "component/each": "*",
-    "LearnBoost/socket.io-client": "*"
+    "component/each": "*"
   },
   "development": {},
   "license": "MIT",
@@ -22,7 +21,8 @@
     "public/javascripts/controllers/application.js",
     "public/javascripts/controllers/menu.js",
     "public/javascripts/directives/pillbox.js",
-    "public/javascripts/directives/slider.js"
+    "public/javascripts/directives/slider.js",
+    "public/javascripts/services/io.js"
   ],
   "styles": [
     "public/stylesheets/main.css",

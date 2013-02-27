@@ -1,18 +1,18 @@
 /*
  * Module dependencies
  */
-var app = require("..");
+var app = require("..")
+  , ioService = require("../services/io");
 
 /*
  * MenuController
  */
-function MenuController($scope, $routeParams) {
-  $scope.apps = [
-    {name: "photos"},
-    {name: "landing"},
-    {name: "home"},
-    {name: "profile"}
-  ];
+function MenuController($scope, $routeParams, io) {
+  io.on("applications", function(apps) {
+    $scope.$apply(function() {
+      $scope.apps = apps;
+    });
+  });
 
   $scope.$routeParams = $routeParams;
 
@@ -27,6 +27,7 @@ function MenuController($scope, $routeParams) {
 app.controller(MenuController.name, [
   '$scope',
   '$routeParams',
+  ioService,
   MenuController
 ]);
 

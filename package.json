@@ -20,9 +20,13 @@
   "dependencies": {
     "startup": "~0.1.11",
     "express": "~3.1.0",
+    "socket.io": "~0.9.13",
+    "component": "~0.13.0",
+    "simple-db": "0.0.2"
+  },
+  "devDependencies": {
     "should": "~1.2.2",
     "supertest": "~0.5.1",
-    "mocha": "~1.8.1",
-    "socket.io": "~0.9.13"
+    "mocha": "~1.8.1"
   }
 }

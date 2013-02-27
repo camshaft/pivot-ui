@@ -8,7 +8,7 @@
   <ul id="menu" data-ng-controller="MenuController">
     <li><p>Applications</p></li>
     <li data-ng-repeat="app in apps">
-      <a data-ng-class="{active: app.name == currentApp}" data-ng-href="#/apps/{{app.name}}" data-ng-bind="app.name"></a>
+      <a data-ng-class="{active: app == currentApp}" data-ng-href="#/apps/{{app}}" data-ng-bind="app"></a>
     </li>
   </ul>
   <div id="actions">
@@ -23,6 +23,7 @@
     </select>
   </div>
   <div id="content" data-ng-view=""></div>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="build.js"></script>
 </body>
 </html>
