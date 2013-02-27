@@ -19,8 +19,10 @@ function ApplicationController($scope, $routeParams, io) {
   io.emit("application", appName, handleFeatures);
   io.on(appName, handleFeatures);
 
-  $scope.$watch("application", function(oldVal, newVal) {
+  $scope.$watch("application", function(newVal, oldVal) {
     if(!oldVal || !newVal) return;
+    // TODO check if this is an update from the other end
+    // TODO remove all of the garbage properties angular puts on our obj
     io.emit("application-update", appName, newVal);
   }, true);
 };
