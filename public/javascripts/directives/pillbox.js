@@ -2,34 +2,40 @@
  * Module dependencies
  */
 var app = require("..")
-  , Pillbox = require("pillbox")
   , each = require("each");
 
 /*
  * pillbox
  */
 function pillbox() {
-  return function($scope, $elem, attrs) {
-    var input = Pillbox($elem[0]);
+  return {
+    template: '<div class="pillbox">'+
+                '<ul>'+
+                  '<li data-ng-repeat="tag in tags""><span data-ng-bind="tag"></span><a data-ng-click="remove(tag)">✕</a></li>'+
+                '</ul>'+
+                '<form style="display: inline-block;" data-ng-submit="add(input)"><input type="text" class="pillbox" data-ng-model="input"></form>'+
+              '</div>',
+    scope: true,
+    replace: true,
+    restrict: 'A',
+    link: function($scope, $elem, $attrs) {
+      $scope.tags = $scope.$eval($attrs.pillbox) || [];
 
-    var list = $scope.$eval(attrs.pillbox);
+      $scope.add = function(value) {
+        if($scope.tags.indexOf(value) !== -1) return;
+        $scope.tags.push(value);
+        $scope.input = "";
+      };
 
-    each(list, function(item) {
-      input.add(item);
-    });
+      $scope.remove = function(value) {
+        $scope.tags.splice($scope.tags.indexOf(value), 1);
+      };
 
-    input.on("add", function(tag) {
-      $scope.$apply(function() {
-        list.push(tag);
+      $scope.$watch($attrs.pillbox, function(value) {
+        $scope.tags = value;
       });
-    });
-
-    input.on("remove", function(tag) {
-      $scope.$apply(function() {
-        list.splice(list.indexOf(tag), 1);
-      });
-    });
-  };
+    }
+  }
 };
 
 /*

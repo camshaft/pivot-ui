@@ -14,7 +14,7 @@ var IndexController = require("./controllers/index")
  * Initialize the directives used outside of the controllers
  */
 require("./directives/pillbox");
-require("./directives/slider");
+require("./filters/feature");
 
 /*
  * Configure the app

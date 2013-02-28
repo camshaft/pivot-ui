@@ -21,7 +21,7 @@
     "public/javascripts/controllers/application.js",
     "public/javascripts/controllers/menu.js",
     "public/javascripts/directives/pillbox.js",
-    "public/javascripts/directives/slider.js",
+    "public/javascripts/filters/feature.js",
     "public/javascripts/services/io.js"
   ],
   "styles": [

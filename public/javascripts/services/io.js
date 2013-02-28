@@ -4,7 +4,7 @@
 var app = require("..");
 
 /**
- * HomeController
+ * Socket.IO Service
  */
 function io() {
   var client = window.io.connect();

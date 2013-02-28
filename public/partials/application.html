@@ -1,8 +1,8 @@
 <h2 data-ng-bind="appName"></h2>
 
-<span data-ng-bind="application | json"></span>
+<p data-ng-show="!!search">Showing results for '<span data-ng-bind="search"></span>'</p>
 
-<div data-ng-repeat="(name, feature) in application.features">
+<div data-ng-repeat="(name, feature) in application.features | feature:search">
   <div class="feature">
     <div class="block contents">
       <h3 data-ng-click="showing = !showing" data-ng-bind="name"></h3>
@@ -10,8 +10,9 @@
       <div>
         <hr>
 
-        <label>Enabled
-        <input type="checkbox" data-ng-model="feature.config.enabled"></label>
+        <label>Enabled <input type="checkbox" data-ng-model="feature.config.enabled"></label>
+
+        <label>Deprecated <input type="checkbox" data-ng-model="feature.config.deprecated"></label>
 
         <h5>Users</h5>
         <span data-ng-show="feature.config.users.length == 0"><small>no selection</small></span>
@@ -26,7 +27,7 @@
         <li data-ng-repeat="variant in feature.variants" data-ng-bind="variant"></li>
         </ul>
 
-        <div data-slider="{values: [1, 20, 100]}"></div>
+        <input type="range" data-ng-repeat="key in feature.variants" data-ng-model="feature.config.buckets[key]">
 
       </div>
     </div>

@@ -138,11 +138,17 @@
 }
 
 .feature .pillbox input {
+  border-bottom: 1px solid white;
   -webkit-user-select: initial;
      -moz-user-select: initial;
       -ms-user-select: initial;
        -o-user-select: initial;
           user-select: initial;
+}
+
+.feature .pillbox input:hover,
+.feature .pillbox input:focus {
+  border-bottom: 1px solid #CCC;
 }
 
 .feature .pillbox ul li {

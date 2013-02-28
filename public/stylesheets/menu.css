@@ -8,12 +8,12 @@ body {
   top: 0;
   left: 0;
   height: 100%;
-  width: 80px;
+  width: 100px;
   background: #3b3b3b;
   border-right: 1px solid #232323;
   -webkit-box-shadow: 0 0 0 1px rgba(255,255,255,0.5);
   box-shadow: 0 0 0 1px rgba(255,255,255,0.5);
-  overflow: scroll;
+  overflow-y: auto;
 }
 #menu li {
   margin: 0;
