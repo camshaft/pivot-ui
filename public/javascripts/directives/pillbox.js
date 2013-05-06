@@ -13,13 +13,15 @@ function pillbox() {
                 '<ul>'+
                   '<li data-ng-repeat="tag in tags""><span data-ng-bind="tag"></span><a data-ng-click="remove(tag)">✕</a></li>'+
                 '</ul>'+
-                '<form style="display: inline-block;" data-ng-submit="add(input)"><input type="text" class="pillbox" data-ng-model="input"></form>'+
+                '<input data-ng-repeat="tag in tags" type="hidden" name="{{name}}[{{$index}}]" value="{{tag}}">'+
+                '<form style="display: inline-block;" data-ng-submit="add(input)"><input placeholder="click to add" type="text" class="pillbox" data-ng-model="input"></form>'+
               '</div>',
     scope: true,
     replace: true,
     restrict: 'A',
     link: function($scope, $elem, $attrs) {
       $scope.tags = $scope.$eval($attrs.pillbox) || [];
+      $scope.name = $attrs.name;
 
       $scope.add = function(value) {
         if($scope.tags.indexOf(value) !== -1) return;

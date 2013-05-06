@@ -1,0 +1,32 @@
+<div class="feature">
+  <div class="block contents">
+    <h3 class="title" data-ng-click="hiding = !hiding" data-ng-bind="settings.title"></h3>
+
+    <div class="controls" data-ng-hide="hiding">
+
+      <form name="{{feature.title}}" data-ng-submit="submit(settings.update.method, settings.update.action, settings.update.fields)">
+        <label>Enabled <input name="enabled" type="checkbox" data-ng-model="settings.update.fields.enabled.value"></label>
+
+        <label>Deprecated <input name="deprecated" type="checkbox" data-ng-model="settings.update.fields.deprecated.value"></label>
+
+        <h4>Variants</h4>
+
+        <label>Control</label>
+        <select name="control" data-ng-model="settings.update.fields.control.value" data-ng-options="variant.value as variant.value for variant in settings.variants">
+        </select>
+
+        <label>Target</label>
+        <select name="target" data-ng-model="settings.update.fields.target.value" data-ng-options="variant.value as variant.value for variant in settings.variants">
+        </select>
+
+        <input type="submit" value="Save Settings">
+      </form>
+
+      <div class="variants">
+        <div data-ng-repeat="variant in settings.variants" data-ng-include data-src="'partials/variant.html'"></div>
+      </div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

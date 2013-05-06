@@ -1,0 +1,22 @@
+<div class="variant">
+  <h5 data-ng-bind="variant.value"></h5>
+
+  <form action="{{variant.update.action}}" method="{{variant.update.method}}">
+    <div class="setting">
+      <h6>Users</h6>
+      <input type="text" name="users" data-pillbox="variant.users" class="pillbox">
+    </div>
+
+    <!-- TODO add global group support -->
+
+    <div class="setting">
+      <label>Weight</label>
+      <input type="range" name="weight" data-ng-model="variant.weight" max="100">
+      <span data-ng-bind="variant.weight"></span>
+    </div>
+
+    <input type="submit" value="Save">
+
+  </form>
+
+</div>

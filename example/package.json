@@ -1,0 +1,16 @@
+{
+  "name": "pivot-ui-example",
+  "version": "1.0.0",
+  "description": "Pivot ui example",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Cameron Bytheway <cameron@nujii.com>",
+  "license": "MIT",
+  "dependencies": {
+    "startup": "~0.1.12",
+    "simple-stack-common": "~0.1.6"
+  }
+}

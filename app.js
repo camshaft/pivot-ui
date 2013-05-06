@@ -3,84 +3,178 @@
  */
 var express = require("express")
   , io = require("socket.io")
-  , db = require("simple-db");
+  , redis = require("redis")
+  , url = require("url");
 
 /**
  * Expose the app
  */
 var app = module.exports = express();
 
-/**
- * Configure the app
- */
-app.configure("development", function(){
-  app.locals.pretty = true;
-  app.use(express.logger("dev"));
-});
-
 app.configure(function(){
-  app.set("x-powered-by", false);
-  app.use(express.favicon());
+  app.set("redis url", "redis://localhost:6379");
+  app.set("prefix", "pivot");
+
+  app.use(function forceTrailingSlash(req, res, next) {
+    if(req.url === "/" && req.originalUrl[req.originalUrl.length-1] !== "/") return res.redirect(req.originalUrl+"/");
+    next();
+  });
+
   app.use(express.static(__dirname+"/public"));
   app.use(express.static(__dirname+"/build"));
 });
 
-app.on("ready", function(server) {
-  var ws = io.listen(server);
+/**
+ * Create the api
+ */
+var api = express()
+  , db = createClient(app.get("redis url"))
+  , prefix = app.get("prefix");
 
-  var clientChannel = ws
-    .on('connection', function(socket) {
-      // TODO auth
+// Mount the api
+app.use("/api", api);
 
-      db.get("applications-list", "list", function(err, applications) {
-        socket.emit("applications", applications);
+api.get("/", function(req, res, next) {
+  db.smembers(join(prefix,"applications"), function(err, applications) {
+    if(err) return next(err);
+
+    var response = {
+      applications: []
+    };
+
+    applications.forEach(function(application) {
+      response.applications.push({
+        title: application,
+        href: req.resolve(application)
       });
-
-      socket.on("feature", function(appName, feature, variants) {
-        db.get("applications", appName, function(err, application) {
-          if(!application) application = {};
-          if(!application.features) application.features = {};
-
-          application.features[feature] = {
-            variants: variants,
-            config: {
-              enabled: false,
-              users: [],
-              groups: [],
-              buckets: {}
-            }
-          };
-
-          db.put("applications", appName, application, function(err) {
-            socket.emit(appName, application);
-            socket.broadcast.emit(appName, application);
-
-            db.get("applications-list", "list", function(err, applications) {
-              if(!applications) applications = [];
-
-              if(applications.indexOf(appName) === -1) applications.push(appName);
-
-              db.put("applications-list", "list", applications, function() {
-                socket.emit("applications", applications);
-                socket.broadcast.emit("applications", applications);
-              });
-            });
-          });
-        });
-      });
-
-      socket.on("application", function(application, fn) {
-        // Ask the database
-        db.get("applications", application, function(err, data) {
-          fn(data);
-        });
-      });
-
-      socket.on("application-update", function(appName, application) {
-        console.log("updating", appName);
-        db.put("applications", appName, application, function(err) {
-          socket.broadcast.emit(appName, application);
-        });
-      })
     });
+
+    res.send(response);
+  });
 });
+
+api.get("/:app", function(req, res, next) {
+  var application = req.params.app;
+  db.smembers(join(prefix,application,"features"), function(err, features) {
+
+    var response = {
+      title: application,
+      features: []
+    };
+
+    features.forEach(function(feature) {
+      response.features.push({
+        title: feature,
+        href: req.resolve(application,"features",feature)
+      });
+    });
+
+    res.send(response);
+  });
+});
+
+api.get("/:app/features/:feature", function(req, res, next) {
+  var application = req.params.app
+    , title = req.params.feature;
+
+  db.hgetall(join(prefix,application,title), function(err, feature) {
+    // Normalize the values from redis
+    Object.keys(feature).forEach(function(prop) {
+      feature[prop] = JSON.parse(feature[prop]);
+    });
+    feature.title = title;
+
+    feature.variants.forEach(function(variant, idx) {
+      variant.update = {
+        action: req.resolve(application,"features",title,"variants",idx),
+        method: "POST",
+        fields: {
+          users: {value: variant.users, label: "Users"},
+          weight: {value: variant.weight, label: "Weight"}
+        }
+      };
+    });
+
+    feature.update = {
+      action: req.resolve(application,"features",title),
+      method: "POST",
+      fields: {
+        enabled: {value: feature.enabled, label: "Enabled"},
+        deprecated: {value: feature.deprecated, label: "Deprecated"},
+        control: {value: feature.control, label: "Control"},
+        target: {value: feature.target, label: "Target"}
+      }
+    }
+
+    res.send(feature);
+  });
+});
+
+api.post("/:app/features/:feature", function(req, res, next) {
+  var application = req.params.app
+    , title = req.params.feature;
+
+  var feature = {};
+
+  if(typeof req.body.enabled !== "undefined") feature.enabled = JSON.stringify(req.body.enabled.value);
+  if(typeof req.body.deprecated !== "undefined") feature.deprecated = JSON.stringify(req.body.deprecated.value);
+  if(typeof req.body.control !== "undefined") feature.control = JSON.stringify(req.body.control.value);
+  if(typeof req.body.target !== "undefined") feature.target = JSON.stringify(req.body.target.value);
+
+  if(!Object.keys(feature).length) return res.send(204);
+
+  db.hmset(join(prefix,application,title), feature, function(err) {
+    if(err) return next(err);
+    res.send(204);
+  });
+});
+
+api.post("/:app/features/:feature/variants/:variant", function(req, res, next) {
+  var application = req.params.app
+    , feature = req.params.feature
+    , idx = req.params.variant
+    , key = join(prefix,application,feature);
+
+  db.hmget(key, "variants", function(err, variants) {
+    if(err) return next(err);
+    variants = JSON.parse(variants);
+
+    var variant = variants[idx];
+
+    if(req.body.weight) variant.weight = JSON.parse(req.body.weight);
+    if(req.body.users) variant.users = req.body.users;
+
+    variants[idx] = variant;
+
+    db.hmset(key, "variants", JSON.stringify(variants), function(err) {
+      if(err) return next(err);
+      res.send(204);
+    });
+  });
+});
+
+function join() {
+  return Array.prototype.join.call(arguments, ":");
+};
+
+/**
+ * Create a redis client from a url
+ *
+ * @api private
+ */
+function createClient(redisUrl) {
+  var options = url.parse(redisUrl)
+    , client = redis.createClient(options.port, options.hostname);
+
+  // Authorize the connection
+  if (options.auth) client.auth(options.auth.split(":")[1]);
+
+  // Exit gracefully
+  function close() {
+    client.end();
+  };
+  process.once("SIGTERM", close);
+  process.once("SIGINT", close);
+
+  return client
+};

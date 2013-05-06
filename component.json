@@ -9,7 +9,8 @@
     "CamShaft/component-angular": "*",
     "component/spinner": "*",
     "component/pillbox": "*",
-    "component/each": "*"
+    "component/each": "*",
+    "visionmedia/superagent": "*"
   },
   "development": {},
   "license": "MIT",
@@ -19,16 +20,17 @@
     "public/javascripts/index.js",
     "public/javascripts/controllers/index.js",
     "public/javascripts/controllers/application.js",
+    "public/javascripts/controllers/feature.js",
     "public/javascripts/controllers/menu.js",
     "public/javascripts/directives/pillbox.js",
-    "public/javascripts/filters/feature.js",
-    "public/javascripts/services/io.js"
+    "public/javascripts/filters/feature.js"
   ],
   "styles": [
     "public/stylesheets/main.css",
     "public/stylesheets/menu.css",
     "public/stylesheets/block.css",
     "public/stylesheets/feature.css",
-    "public/stylesheets/actions.css"
+    "public/stylesheets/actions.css",
+    "public/stylesheets/variant.css"
   ]
 }

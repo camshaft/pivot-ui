@@ -4,7 +4,6 @@
 .feature .block {
   position: relative;
   background: #fff;
-  cursor: pointer;
 }
 .feature .block table td:first-child {
   display: none;
@@ -24,6 +23,16 @@
   border-radius: 2px;
   font-size: 10px;
 }
+
+.feature .title {
+  cursor: pointer;
+}
+
+.feature .controls {
+  border-top: 1px #ccc solid;
+  padding-top: 10px;
+}
+
 .feature .block .remove {
   position: absolute;
   top: 30px;

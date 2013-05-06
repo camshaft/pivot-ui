@@ -2,20 +2,15 @@
 <head>
   <title>Pivot UI</title>
   <link rel="stylesheet" type="text/css" href="build.css">
-  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css">
 </head>
 <body>
   <ul id="menu" data-ng-controller="MenuController">
     <li><p>Applications</p></li>
     <li data-ng-repeat="app in apps">
-      <a data-ng-class="{active: app == currentApp}" data-ng-href="#/apps/{{app}}" data-ng-bind="app"></a>
+      <a data-ng-class="{active: app.title == currentApp}" data-ng-href="#/apps/{{app.title}}" data-ng-bind="app.title"></a>
     </li>
   </ul>
-  <div id="actions">
-    <input id="search" data-ng-model="search" type="text" placeholder="Search">
-  </div>
   <div id="content" data-ng-view=""></div>
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="build.js"></script>
 </body>
 </html>

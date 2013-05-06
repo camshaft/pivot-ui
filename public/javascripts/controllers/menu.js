@@ -2,17 +2,20 @@
  * Module dependencies
  */
 var app = require("..")
-  , ioService = require("../services/io");
+  , superagent = require("superagent");
 
 /*
  * MenuController
  */
-function MenuController($scope, $routeParams, io) {
-  io.on("applications", function(apps) {
-    $scope.$apply(function() {
-      $scope.apps = apps;
+function MenuController($scope, $routeParams) {
+  superagent
+    .get("api")
+    .end(function(err, res) {
+      $scope.$apply(function() {
+        // TODO handle error
+        $scope.apps = res.body.applications;
+      });
     });
-  });
 
   $scope.$routeParams = $routeParams;
 
@@ -27,7 +30,6 @@ function MenuController($scope, $routeParams, io) {
 app.controller(MenuController.name, [
   '$scope',
   '$routeParams',
-  ioService,
   MenuController
 ]);
 
