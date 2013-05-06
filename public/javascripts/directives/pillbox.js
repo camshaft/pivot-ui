@@ -13,7 +13,8 @@ function pillbox() {
                 '<ul>'+
                   '<li data-ng-repeat="tag in tags""><span data-ng-bind="tag"></span><a data-ng-click="remove(tag)">✕</a></li>'+
                 '</ul>'+
-                '<input data-ng-repeat="tag in tags" type="hidden" name="{{name}}[{{$index}}]" value="{{tag}}">'+
+                '<input type="hidden" name="{{name}}[]">'+
+                '<input data-ng-repeat="tag in tags" type="hidden" name="{{name}}[{{$index+1}}]" value="{{tag}}">'+
                 '<form style="display: inline-block;" data-ng-submit="add(input)"><input placeholder="click to add" type="text" class="pillbox" data-ng-model="input"></form>'+
               '</div>',
     scope: true,

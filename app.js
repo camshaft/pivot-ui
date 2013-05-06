@@ -2,7 +2,6 @@
  * Module exports
  */
 var express = require("express")
-  , io = require("socket.io")
   , redis = require("redis")
   , url = require("url");
 
