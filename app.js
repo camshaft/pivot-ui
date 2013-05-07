@@ -74,18 +74,17 @@ api.get("/:app", function(req, res, next) {
 
 api.get("/:app/features/:feature", function(req, res, next) {
   var application = req.params.app
-    , title = req.params.feature;
+    , name = req.params.feature;
 
-  db.hgetall(join(prefix,application,title), function(err, feature) {
+  db.hgetall(join(prefix,application,name), function(err, feature) {
     // Normalize the values from redis
     Object.keys(feature).forEach(function(prop) {
       feature[prop] = JSON.parse(feature[prop]);
     });
-    feature.title = title;
 
-    feature.variants.forEach(function(variant, idx) {
+    feature.groups.forEach(function(variant, idx) {
       variant.update = {
-        action: req.resolve(application,"features",title,"variants",idx),
+        action: req.resolve(application,"features",name,"variants",idx),
         method: "POST",
         fields: {
           users: {value: variant.users, label: "Users"},
@@ -95,11 +94,11 @@ api.get("/:app/features/:feature", function(req, res, next) {
     });
 
     feature.update = {
-      action: req.resolve(application,"features",title),
+      action: req.resolve(application,"features",name),
       method: "POST",
       fields: {
         enabled: {value: feature.enabled, label: "Enabled"},
-        deprecated: {value: feature.deprecated, label: "Deprecated"},
+        released: {value: feature.released, label: "Deprecated"},
         control: {value: feature.control, label: "Control"},
         target: {value: feature.target, label: "Target"}
       }
@@ -111,18 +110,18 @@ api.get("/:app/features/:feature", function(req, res, next) {
 
 api.post("/:app/features/:feature", function(req, res, next) {
   var application = req.params.app
-    , title = req.params.feature;
+    , name = req.params.feature;
 
   var feature = {};
 
   if(typeof req.body.enabled !== "undefined") feature.enabled = JSON.stringify(req.body.enabled.value);
-  if(typeof req.body.deprecated !== "undefined") feature.deprecated = JSON.stringify(req.body.deprecated.value);
+  if(typeof req.body.released !== "undefined") feature.released = JSON.stringify(req.body.released.value);
   if(typeof req.body.control !== "undefined") feature.control = JSON.stringify(req.body.control.value);
   if(typeof req.body.target !== "undefined") feature.target = JSON.stringify(req.body.target.value);
 
   if(!Object.keys(feature).length) return res.send(204);
 
-  db.hmset(join(prefix,application,title), feature, function(err) {
+  db.hmset(join(prefix,application,name), feature, function(err) {
     if(err) return next(err);
     res.send(204);
   });
@@ -134,7 +133,7 @@ api.post("/:app/features/:feature/variants/:variant", function(req, res, next) {
     , idx = req.params.variant
     , key = join(prefix,application,feature);
 
-  db.hmget(key, "variants", function(err, variants) {
+  db.hmget(key, "groups", function(err, variants) {
     if(err) return next(err);
     variants = JSON.parse(variants);
 
@@ -145,7 +144,7 @@ api.post("/:app/features/:feature/variants/:variant", function(req, res, next) {
 
     variants[idx] = variant;
 
-    db.hmset(key, "variants", JSON.stringify(variants), function(err) {
+    db.hmset(key, "groups", JSON.stringify(variants), function(err) {
       if(err) return next(err);
       res.send(204);
     });

@@ -24,6 +24,10 @@
   font-size: 10px;
 }
 
+.feature.wip .wip {
+  color: red;
+}
+
 .feature .title {
   cursor: pointer;
 }
